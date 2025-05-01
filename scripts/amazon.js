@@ -25,7 +25,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select class="js-quantity-selector-${product.id}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -41,18 +41,56 @@ products.forEach((product) => {
 
       <div class="product-spacer"></div>
 
-      <div class="added-to-cart">
+      <div class="added-to-cart js-added-message-${product.id}">
         <img src="images/icons/checkmark.png">
         Added
       </div>
 
-      <button class="add-to-cart-button button-primary">
+      <button class="add-to-cart-button button-primary js-add-to-cart"
+      data-product-id="${product.id}"
+      >
         Add to Cart
       </button>
     </div>
   `;
 });
 
-console.log(productsHTML);
-
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+let setTimeoutId = {};
+document.querySelectorAll('.js-add-to-cart').forEach( (button) => {
+  button.addEventListener('click', () => {
+    const {productId} = button.dataset;
+    const selectedValue = document.querySelector(`.js-quantity-selector-${productId}`).value;
+    const quantity = Number(selectedValue);
+    let cartQuantity = 0;
+    let matchingItem;
+    
+    cart.forEach((cartItem)=>{
+      if(cartItem.productId === productId) matchingItem = cartItem;
+    })
+    if(matchingItem) matchingItem.quantity += quantity;
+    else{
+      cart.push({
+        productId,
+        quantity
+      })
+    }
+    
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+    })
+    
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    
+    document.querySelector(`.js-added-message-${productId}`).classList.add('added-message');
+    
+    if(setTimeoutId[productId]){
+      clearTimeout(setTimeoutId[productId]);
+    }
+    setTimeoutId[productId] = setTimeout(()=>{
+      document.querySelector(`.js-added-message-${productId}`).classList.remove('added-message');
+    }, 2000);
+    
+    console.log(setTimeoutId);
+  })
+})
