@@ -1,6 +1,27 @@
-import { cart } from '../data/cart.js';
+import { cart, addToCart } from '../data/cart.js';
+import { products } from '../data/products.js';
+
 
 let productsHTML = '';
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    })
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
+function showAddedMessage (productId) {
+  document.querySelector(`.js-added-message-${productId}`).classList.add('added-message');
+    
+    if(setTimeoutId[productId]){
+      clearTimeout(setTimeoutId[productId]);
+    }
+    setTimeoutId[productId] = setTimeout(()=>{
+      document.querySelector(`.js-added-message-${productId}`).classList.remove('added-message');
+    }, 2000);
+}
 
 products.forEach((product) => {
   productsHTML += `
@@ -64,35 +85,10 @@ let setTimeoutId = {};
 document.querySelectorAll('.js-add-to-cart').forEach( (button) => {
   button.addEventListener('click', () => {
     const {productId} = button.dataset;
-    const selectedValue = document.querySelector(`.js-quantity-selector-${productId}`).value;
-    const quantity = Number(selectedValue);
-    let cartQuantity = 0;
-    let matchingItem;
+    const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
     
-    cart.forEach((cartItem)=>{
-      if(cartItem.productId === productId) matchingItem = cartItem;
-    })
-    if(matchingItem) matchingItem.quantity += quantity;
-    else{
-      cart.push({
-        productId,
-        quantity
-      })
-    }
-    
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    })
-    
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-    
-    document.querySelector(`.js-added-message-${productId}`).classList.add('added-message');
-    
-    if(setTimeoutId[productId]){
-      clearTimeout(setTimeoutId[productId]);
-    }
-    setTimeoutId[productId] = setTimeout(()=>{
-      document.querySelector(`.js-added-message-${productId}`).classList.remove('added-message');
-    }, 2000);
+    addToCart(productId, quantity);
+    updateCartQuantity();
+    showAddedMessage(productId);
   })
 })
