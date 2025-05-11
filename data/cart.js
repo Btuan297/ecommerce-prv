@@ -61,7 +61,7 @@ function renderCartQuanity(cartClass) {
 function updateQuantity(productId, newQuantity) {
   let matchingItem;
   matchingItem = cart.find(cartItem => cartItem.productId === productId);
-  if(matchingItem) matchingItem.quantity += newQuantity;
+  if(matchingItem) matchingItem.quantity = newQuantity;
 
   saveToStorage();
   return matchingItem.quantity;

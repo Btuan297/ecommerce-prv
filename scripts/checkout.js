@@ -35,7 +35,9 @@ function renderCart() {
             data-product-id="${matchingProduct.id}">
               Update
             </span>
-            <input class="quantity-input js-${matchingProduct.id}-quantity-input">
+            <input class="quantity-input js-${matchingProduct.id}-quantity-input"
+            value="${cartItem.quantity}"
+            data-product-id="${matchingProduct.id}">
             <span class="save-quantiy-link link-primary"
             data-product-id="${matchingProduct.id}">
               Save
@@ -128,27 +130,46 @@ function addUpdateEvent(){
           .classList.add('is-editing-quantity')
         });
       });
-  addSaveQuantityInput();
+  
+  addSaveEvent();
+  handleKeyDown();
 }
 
-function addSaveQuantityInput() {
+function addSaveEvent() {
   document.querySelectorAll('.save-quantiy-link')
     .forEach((link) => {
       link.addEventListener('click', () => {
         const {productId} = link.dataset;
   
-        let inputQuantity = Number(document.querySelector(`.js-${productId}-quantity-input`).value);
-
-        document.querySelector(`.js-quantity-${productId}-label`).innerHTML = updateQuantity(productId, inputQuantity);
-
-        document.querySelector(`.js-cart-${productId}-container`)
-          .classList.remove('is-editing-quantity')
-
-        updateCheckout();
+        saveNewQuantity(productId);
       })
     })
 }
 
+function saveNewQuantity(productId) {
+  let inputQuantity = Number(document.querySelector(`.js-${productId}-quantity-input`).value);
+
+  if(inputQuantity < 0 || inputQuantity > 1000 || !inputQuantity) alert('Not a valid quantity');
+
+  else{
+    document.querySelector(`.js-quantity-${productId}-label`).innerHTML = updateQuantity(productId, inputQuantity);
+  
+    document.querySelector(`.js-cart-${productId}-container`)
+      .classList.remove('is-editing-quantity')
+  
+    updateCheckout();
+  }
+}
+
+function handleKeyDown() {
+  document.querySelectorAll('.quantity-input')
+    .forEach((input) => {
+      input.addEventListener('keydown', event => {
+        const {productId} = input.dataset;
+        if(event.key === 'Enter') saveNewQuantity(productId);
+      });
+   });
+}
 
 
 
