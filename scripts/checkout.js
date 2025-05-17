@@ -1,4 +1,4 @@
-import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../data/cart.js";
+import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOption } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deliveryOptions } from "../data/delivery-options.js";
@@ -13,13 +13,13 @@ function renderCart() {
     let matchingProduct;
     matchingProduct = products.find( product => product.id === productId);
 
-    const deliveryOptionId = cartItem.deliveryOptionsId;
+    const deliveryOptionId = cartItem.deliveryOptionId;
     let matchingOption;
     matchingOption = deliveryOptions.find( option => option.id === deliveryOptionId);
     
     cartSummaryHTML +=`
     <div class="cart-item-container js-cart-${matchingProduct.id}-container">
-      <div class="delivery-date">
+      <div class="delivery-date js-delivery-date-${matchingProduct.id}">
         Delivery date: ${calculateDate(matchingOption)}
       </div>
   
@@ -68,6 +68,7 @@ function renderCart() {
 
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
   //thêm lại các event vào các thẻ khi thực hiện thao tác thêm, sửa, xóa
+  saveUpdatedOption();
   addUpdateEvent();
   updateCheckout();
   addDeleteEvent();
@@ -81,6 +82,20 @@ function calculateDate(option){
   return dateString;
 }
 
+function saveUpdatedOption(){
+  document.querySelectorAll('.js-delivery-option')
+    .forEach( option => {
+      option.addEventListener('click', () => {
+        const {productId, deliveryOptionId} = option.dataset;
+        const optionDate = document.querySelector(`.js-delivery-option-date-${deliveryOptionId}`).innerHTML;
+
+        document.querySelector(`.js-delivery-date-${productId}`).innerHTML = `Delivery date: ${optionDate}`;
+
+        updateDeliveryOption(productId, deliveryOptionId);
+      })
+    })
+}
+
 function deliveryOptionsHTML(matchingProduct, cartItem){
   let optionsHTML = '';
   deliveryOptions.forEach( option => {
@@ -91,12 +106,14 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
     const isChecked = option.id === cartItem.deliveryOptionId;
 
     optionsHTML += `
-      <div class="delivery-option">
+      <div class="delivery-option js-delivery-option"
+      data-product-id="${matchingProduct.id}"
+      data-delivery-option-id="${option.id}">
         <input type="radio" ${isChecked ? 'checked': ''}
           class="delivery-option-input"
           name="delivery-option-${matchingProduct.id}">
         <div>
-          <div class="delivery-option-date">
+          <div class="delivery-option-date js-delivery-option-date-${option.id}">
             ${calculateDate(option)}
           </div>
           <div class="delivery-option-price">

@@ -71,4 +71,13 @@ function updateQuantity(productId, newQuantity) {
   return matchingItem.quantity;
 }
 
-export { cart, addToCart, removeFromCart, calculateCartQuantity, renderCartQuanity, updateQuantity };
+function updateDeliveryOption(productId, deliveryOptionId){
+  let matchingItem;
+  matchingItem = cart.find(cartItem => cartItem.productId === productId);
+
+  matchingItem.deliveryOptionId = deliveryOptionId;
+
+  saveToStorage();
+}
+
+export { cart, addToCart, removeFromCart, calculateCartQuantity, renderCartQuanity, updateQuantity, updateDeliveryOption };
