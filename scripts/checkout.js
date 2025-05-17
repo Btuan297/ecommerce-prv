@@ -13,9 +13,9 @@ function renderCart() {
     let matchingProduct;
     matchingProduct = products.find( product => product.id === productId);
 
-    const deliveryOptionsId = cartItem.deliveryOptionsId;
+    const deliveryOptionId = cartItem.deliveryOptionsId;
     let matchingOption;
-    matchingOption = deliveryOptions.find( option => option.id === deliveryOptionsId);
+    matchingOption = deliveryOptions.find( option => option.id === deliveryOptionId);
     
     cartSummaryHTML +=`
     <div class="cart-item-container js-cart-${matchingProduct.id}-container">
@@ -81,10 +81,6 @@ function calculateDate(option){
   return dateString;
 }
 
-function checkedOption(){
-  
-}
-
 function deliveryOptionsHTML(matchingProduct, cartItem){
   let optionsHTML = '';
   deliveryOptions.forEach( option => {
@@ -92,7 +88,7 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
     ? 'FREE' 
     : `$${formatCurrency(option.priceCents)}`;
 
-    const isChecked = option.id === cartItem.deliveryOptionsId;
+    const isChecked = option.id === cartItem.deliveryOptionId;
 
     optionsHTML += `
       <div class="delivery-option">
