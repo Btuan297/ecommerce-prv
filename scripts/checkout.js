@@ -1,6 +1,8 @@
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
+import { deliveryOptions } from "../data/delivery-options.js";
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 renderCart();
 function renderCart() {
@@ -10,11 +12,15 @@ function renderCart() {
     const productId = cartItem.productId;
     let matchingProduct;
     matchingProduct = products.find( product => product.id === productId);
+
+    const deliveryOptionsId = cartItem.deliveryOptionsId;
+    let matchingOption;
+    matchingOption = deliveryOptions.find( option => option.id === deliveryOptionsId);
     
     cartSummaryHTML +=`
     <div class="cart-item-container js-cart-${matchingProduct.id}-container">
       <div class="delivery-date">
-        Delivery date: Tuesday, June 21
+        Delivery date: ${calculateDate(matchingOption)}
       </div>
   
       <div class="cart-item-details-grid">
@@ -53,45 +59,7 @@ function renderCart() {
           <div class="delivery-options-title">
             Choose a delivery option:
           </div>
-          <div class="delivery-option">
-            <input type="radio" checked
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">
-                Tuesday, June 21
-              </div>
-              <div class="delivery-option-price">
-                FREE Shipping
-              </div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio"
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">
-                Wednesday, June 15
-              </div>
-              <div class="delivery-option-price">
-                $4.99 - Shipping
-              </div>
-            </div>
-          </div>
-          <div class="delivery-option">
-            <input type="radio"
-              class="delivery-option-input"
-              name="delivery-option-${matchingProduct.id}">
-            <div>
-              <div class="delivery-option-date">
-                Monday, June 13
-              </div>
-              <div class="delivery-option-price">
-                $9.99 - Shipping
-              </div>
-            </div>
-          </div>
+          ${deliveryOptionsHTML(matchingProduct, cartItem)}
         </div>
       </div>
     </div>
@@ -99,9 +67,51 @@ function renderCart() {
   });
 
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+  //thêm lại các event vào các thẻ khi thực hiện thao tác thêm, sửa, xóa
   addUpdateEvent();
   updateCheckout();
   addDeleteEvent();
+}
+
+function calculateDate(option){
+  const today = dayjs();
+  const deliveryDate =  today.add(option.deliveryDays, 'days');
+  const dateString = deliveryDate.format('dddd, MMM DD');
+
+  return dateString;
+}
+
+function checkedOption(){
+  
+}
+
+function deliveryOptionsHTML(matchingProduct, cartItem){
+  let optionsHTML = '';
+  deliveryOptions.forEach( option => {
+    const priceString = option.priceCents === 0 
+    ? 'FREE' 
+    : `$${formatCurrency(option.priceCents)}`;
+
+    const isChecked = option.id === cartItem.deliveryOptionsId;
+
+    optionsHTML += `
+      <div class="delivery-option">
+        <input type="radio" ${isChecked ? 'checked': ''}
+          class="delivery-option-input"
+          name="delivery-option-${matchingProduct.id}">
+        <div>
+          <div class="delivery-option-date">
+            ${calculateDate(option)}
+          </div>
+          <div class="delivery-option-price">
+            ${priceString} - Shipping
+          </div>
+        </div>
+      </div>
+    `
+  })
+
+  return optionsHTML;
 }
 
 function addDeleteEvent() {
@@ -139,7 +149,7 @@ function addSaveEvent() {
   document.querySelectorAll('.save-quantiy-link')
     .forEach((link) => {
       link.addEventListener('click', () => {
-        const {productId} = link.dataset;
+        const {productId} = link.dataset;// lấy dữ liệu từ data attribute
   
         saveNewQuantity(productId);
       })
@@ -147,6 +157,8 @@ function addSaveEvent() {
 }
 
 function saveNewQuantity(productId) {
+
+  //lấy dữ liệu từ ô input tương ứng với productId được lấy từ data attribute
   let inputQuantity = Number(document.querySelector(`.js-${productId}-quantity-input`).value);
 
   if(inputQuantity < 0 || inputQuantity > 1000 || !inputQuantity) alert('Not a valid quantity');
@@ -170,7 +182,6 @@ function handleKeyDown() {
       });
    });
 }
-
 
 
 
