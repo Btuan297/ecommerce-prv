@@ -80,4 +80,4 @@ function updateDeliveryOption(productId, deliveryOptionId){
   saveToStorage();
 }
 
-export { cart, addToCart, removeFromCart, calculateCartQuantity, renderCartQuanity, updateQuantity, updateDeliveryOption };
+export { cart, loadFromStorage , addToCart, removeFromCart, calculateCartQuantity, renderCartQuanity, updateQuantity, updateDeliveryOption };
