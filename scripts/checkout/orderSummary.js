@@ -3,7 +3,7 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/delivery-options.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+import { calculateDate } from "../../data/delivery-options.js";
 
 function renderCart() {
   let cartSummaryHTML = '';
@@ -38,7 +38,7 @@ function renderCart() {
             data-product-id="${matchingProduct.id}">
               Update
             </span>
-            <input type="number" class="quantity-input js-${matchingProduct.id}-quantity-input"
+            <input type="number" min="1" max="999" step="1" class="quantity-input js-${matchingProduct.id}-quantity-input"
             value="${cartItem.quantity}"
             data-product-id="${matchingProduct.id}">
             <span class="save-quantiy-link link-primary"
@@ -72,14 +72,6 @@ function renderCart() {
 }
 
 // Làm việc với delivery option
-function calculateDate(option){
-  const today = dayjs();
-  const deliveryDate =  today.add(option.deliveryDays, 'days');
-  const dateString = deliveryDate.format('dddd, MMM DD');
-
-  return dateString;
-}
-
 function saveUpdatedOption(){
   document.querySelectorAll('.js-delivery-option')
     .forEach( option => {

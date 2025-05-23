@@ -1,6 +1,7 @@
 import { cart, calculateCartQuantity } from "../../data/cart.js";
 import { getProduct, products } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/delivery-options.js";
+import { formatCurrency } from "../utils/money.js";
 
 function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -15,8 +16,8 @@ function renderPaymentSummary() {
     shippingPriceCents += matchingOption.priceCents;
   });
 
-  const totalBeforeTax = (productPriceCents + shippingPriceCents)/100;
-  const estimatedTax = (totalBeforeTax/10);
+  const totalBeforeTax = productPriceCents + shippingPriceCents;
+  const estimatedTax = totalBeforeTax * 0.1;
   const orderTotal = totalBeforeTax + estimatedTax;
 
   const paymentSummaryHTML = `
@@ -26,27 +27,27 @@ function renderPaymentSummary() {
 
     <div class="payment-summary-row">
       <div>Items (${calculateCartQuantity()}):</div>
-      <div class="payment-summary-money">$${productPriceCents / 100}</div>
+      <div class="payment-summary-money">$${formatCurrency(productPriceCents)}</div>
     </div>
 
     <div class="payment-summary-row">
       <div>Shipping &amp; handling:</div>
-      <div class="payment-summary-money">$${shippingPriceCents / 100}</div>
+      <div class="payment-summary-money">$${formatCurrency(shippingPriceCents)}</div>
     </div>
 
     <div class="payment-summary-row subtotal-row">
       <div>Total before tax:</div>
-      <div class="payment-summary-money">$${totalBeforeTax}</div>
+      <div class="payment-summary-money">$${formatCurrency(totalBeforeTax)}</div>
     </div>
 
     <div class="payment-summary-row">
       <div>Estimated tax (10%):</div>
-      <div class="payment-summary-money">$${estimatedTax.toFixed(2)}</div>
+      <div class="payment-summary-money">$${formatCurrency(estimatedTax)}</div>
     </div>
 
     <div class="payment-summary-row total-row">
       <div>Order total:</div>
-      <div class="payment-summary-money">$${orderTotal.toFixed(2)}</div>
+      <div class="payment-summary-money">$${formatCurrency(orderTotal)}</div>
     </div>
 
     <button class="place-order-button button-primary">
