@@ -15,7 +15,7 @@ function renderCart() {
     const matchingOption = getDeliveryOption(deliveryOptionId);
     
     cartSummaryHTML +=`
-    <div class="cart-item-container js-cart-${matchingProduct.id}-container">
+    <div class="cart-item-container js-cart-${matchingProduct.id}-container js-cart-item-container">
       <div class="delivery-date js-delivery-date-${matchingProduct.id}">
         Delivery date: ${calculateDate(matchingOption)}
       </div>
@@ -30,7 +30,8 @@ function renderCart() {
           <div class="product-price">
             $${formatCurrency(matchingProduct.priceCents)}
           </div>
-          <div class="product-quantity">
+          <div class="product-quantity
+          js-product-quantity-${matchingProduct.id}">
             <span>
               Quantity: <span class="quantity-label js-quantity-${matchingProduct.id}-label">${cartItem.quantity}</span>
             </span>
@@ -45,7 +46,8 @@ function renderCart() {
             data-product-id="${matchingProduct.id}">
               Save
             </span>
-            <span class="delete-quantity-link link-primary"
+            <span class="delete-quantity-link link-primary
+            js-delete-link-${matchingProduct.id}"
             data-product-id="${matchingProduct.id}">
               Delete
             </span>
