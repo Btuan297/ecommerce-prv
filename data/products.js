@@ -5,6 +5,12 @@ export function getProduct(productId){
   return matchingItem;
 }
 
+export function addSizeChart(product) {
+  const sizeChart = product.type === 'clothing' ? `<a href="${product.sizeChartLink}" target="_blank">Size chart</a>` : '';
+
+  return sizeChart;
+}
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
