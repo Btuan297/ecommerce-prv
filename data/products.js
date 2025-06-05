@@ -11,6 +11,20 @@ export function addSizeChart(product) {
   return sizeChart;
 }
 
+
+export let products = [];
+
+export function loadProducts(callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response);
+    callback();// gọi hàm render giao diện
+  });
+  
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+}
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -671,3 +685,4 @@ export const products = [
     ]
   }
 ];
+*/

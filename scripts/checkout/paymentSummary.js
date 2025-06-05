@@ -1,8 +1,10 @@
 import { cart, calculateCartQuantity } from "../../data/cart.js";
-import { getProduct, products } from "../../data/products.js";
+import { getProduct, products, loadProducts } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/delivery-options.js";
 import { formatCurrency } from "../utils/money.js";
 
+
+loadProducts();
 function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
