@@ -14,11 +14,11 @@ export function addSizeChart(product) {
 
 export let products = [];
 
-export function loadProducts(callback) {
+export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', () => {
     products = JSON.parse(xhr.response);
-    callback();// gọi hàm render giao diện
+    fun();
   });
   
   xhr.open('GET', 'https://supersimplebackend.dev/products');
