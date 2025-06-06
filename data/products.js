@@ -20,6 +20,7 @@ export function loadProducts(fun) {
     products = JSON.parse(xhr.response);
     fun();
   });
+  console.log('load products');
   
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();

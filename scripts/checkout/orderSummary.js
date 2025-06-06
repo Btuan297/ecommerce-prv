@@ -1,12 +1,11 @@
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOption } from "../../data/cart.js";
-import { products, getProduct, loadProducts } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/delivery-options.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 import { calculateDate } from "../../data/delivery-options.js";
 
 
-loadProducts();
 function renderCart() {
   let cartSummaryHTML = '';
   
