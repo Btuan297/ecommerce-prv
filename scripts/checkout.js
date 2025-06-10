@@ -1,16 +1,30 @@
 import { renderCart } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-import { loadProducts, loadProductsFetch } from "../data/products.js";
-import { loadCart } from "../data/cart.js";
+import { loadProductsFetch } from "../data/products.js";
+import { loadCartFetch } from "../data/cart.js";
 // import '../data/car.js'
 // import '../data/backend-practice.js';
 
 
+async function loadPage() {
+  await loadProductsFetch();
+
+  const value = await loadCartFetch();
+
+  console.log(value);
+
+  renderCart();
+  renderPaymentSummary();
+}
+
+loadPage();
+
+/*
 Promise.all([
   loadProductsFetch(),
   new Promise((resolve) => {
     loadCart(() => {
-      resolve();
+      resolve(1);
     });
   })
 
@@ -19,6 +33,7 @@ Promise.all([
   renderCart();
   renderPaymentSummary(); 
 })
+*/
 
 /*
 new Promise((resolve) => {
