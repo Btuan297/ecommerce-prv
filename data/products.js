@@ -23,12 +23,12 @@ export function loadProductsFetch() {
       products = productsData;
       console.log('Step 2: Data', products);
       return 3;
-    });
+    })
 
-    return promise;
+  return promise;
 }
 
-/*
+
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', () => {
@@ -37,11 +37,15 @@ export function loadProducts(fun) {
     fun();
   });
   console.log('load products');
+
+  xhr.addEventListener('error', (error) => {
+    console.log('Unexpected error. Please try again later.', error);
+  });
   
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
 }
-*/
+
 
 /*
 export const products = [
