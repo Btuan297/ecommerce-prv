@@ -1,51 +1,52 @@
-export function getProduct(productId){
+export function getProduct(productId) {
   let matchingItem;
-  matchingItem = products.find(product => product.id === productId);
+  matchingItem = products.find((product) => product.id === productId);
 
   return matchingItem;
 }
 
 export function addSizeChart(product) {
-  const sizeChart = product.type === 'clothing' ? `<a href="${product.sizeChartLink}" target="_blank">Size chart</a>` : '';
+  const sizeChart =
+    product.type === "clothing"
+      ? `<a href="${product.sizeChartLink}" target="_blank">Size chart</a>`
+      : "";
 
   return sizeChart;
 }
 
-
 export let products = [];
 
 export function loadProductsFetch() {
-  const promise = fetch('https://supersimplebackend.dev/products')
+  const promise = fetch("https://supersimplebackend.dev/products")
     .then((response) => {
-      console.log('Step 1: response object', response);
+      console.log("Step 1: response object", response);
       return response.json();
-    }).then((productsData) => {
-      products = productsData;
-      console.log('Step 2: Data', products);
-      return 3;
     })
+    .then((productsData) => {
+      products = productsData;
+      console.log("Step 2: Data", products);
+      return 3;
+    });
 
   return promise;
 }
 
-
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', () => {
+  xhr.addEventListener("load", () => {
     products = JSON.parse(xhr.response);
-    console.log('loading products');
+    console.log("loading products");
     fun();
   });
-  console.log('load products');
+  console.log("load products");
 
-  xhr.addEventListener('error', (error) => {
-    console.log('Unexpected error. Please try again later.', error);
+  xhr.addEventListener("error", (error) => {
+    console.log("Unexpected error. Please try again later.", error);
   });
-  
-  xhr.open('GET', 'https://supersimplebackend.dev/products');
+
+  xhr.open("GET", "https://supersimplebackend.dev/products");
   xhr.send();
 }
-
 
 /*
 export const products = [

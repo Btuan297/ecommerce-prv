@@ -5,12 +5,10 @@ import { loadCartFetch, loadCart } from "../data/cart.js";
 // import '../data/car.js'
 // import '../data/backend-practice.js';
 
-
-
+/*
 async function loadPage() {
   try{
     // throw 'error1';
-
     await loadProductsFetch();
     // await loadCartFetch();
     const value = await new Promise((resolve, reject) => {
@@ -29,9 +27,20 @@ async function loadPage() {
   renderCart();
   renderPaymentSummary();
 }
+*/
+
+async function loadPage() {
+  try {
+    await Promise.all([loadProductsFetch(), loadCartFetch()]);
+  } catch (error) {
+    console.log("Unexpected error. Please try again later.", error);
+  }
+
+  renderCart();
+  renderPaymentSummary();
+}
 
 loadPage();
-
 
 /*
 Promise.all([
@@ -76,6 +85,3 @@ loadProducts(() => {
   })
 })
 */
-
-
-
