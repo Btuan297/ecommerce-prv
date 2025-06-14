@@ -15,27 +15,17 @@ export function addSizeChart(product) {
 }
 
 export let products = [];
-
-export function loadProductsFetch() {
-  const promise = fetch("https://supersimplebackend.dev/products")
-    .then((response) => {
-      console.log("Step 1: response object", response);
-      return response.json();
-    })
-    .then((productsData) => {
-      products = productsData;
-      console.log("Step 2: Data", products);
-      return 3;
-    });
-
-  return promise;
+export async function loadProductsFetch() {
+  const promise = await fetch("https://supersimplebackend.dev/products");
+  const response = await promise.json();
+  products = response;
+  return products;
 }
 
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
     products = JSON.parse(xhr.response);
-    console.log("loading products");
     fun();
   });
   console.log("load products");

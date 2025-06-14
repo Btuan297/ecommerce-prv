@@ -138,4 +138,5 @@ export {
   renderCartQuanity,
   updateQuantity,
   updateDeliveryOption,
+  saveToStorage
 };

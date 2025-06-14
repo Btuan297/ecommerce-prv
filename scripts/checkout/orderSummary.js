@@ -11,7 +11,7 @@ function renderCart() {
   
   cart.forEach( (cartItem) => {
     const productId = cartItem.productId;
-    const matchingProduct = getProduct(productId, products);
+    const matchingProduct = getProduct(productId);
     const deliveryOptionId = cartItem.deliveryOptionId;
     const matchingOption = getDeliveryOption(deliveryOptionId);
     
