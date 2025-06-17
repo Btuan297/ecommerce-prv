@@ -83,11 +83,12 @@ async function renderOrders() {
 }
 
 function buyAgain() {
-  document.querySelectorAll(".js-buy-again-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const { productId } = button.dataset;
-      addToCart(productId, 1);
-      renderCartQuanity("cart-quantity");
+  document.querySelectorAll(".js-buy-again-button")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const { productId } = button.dataset;
+        addToCart(productId, 1);
+        renderCartQuanity("cart-quantity");
     });
   });
 }

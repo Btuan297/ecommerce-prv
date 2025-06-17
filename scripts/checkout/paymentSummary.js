@@ -63,8 +63,16 @@ function renderPaymentSummary() {
     </button>
   `;
 
-  if(cart.length === 0) document.querySelector('.js-order-summary').innerHTML = 'Your cart is empty';
   document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
+
+  if(cart.length === 0) {
+    document.querySelector('.js-order-summary')
+      .innerHTML = `
+        <div> Your cart is empty </div>
+        <a class="button-primary view-products-link" href="index.html"> View products </a>
+      `;
+    document.querySelector('.js-place-order').classList.add('place-order-button-disabled');
+  }
 
   document
     .querySelector(".js-place-order")

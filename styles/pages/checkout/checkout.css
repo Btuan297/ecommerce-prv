@@ -234,3 +234,15 @@
 .is-editing-quantity .quantity-label {
   display: none;
 }
+
+.order-summary .view-products-link {
+  display: inline-block;
+  padding: 8px 15px;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.place-order-button-disabled{
+  pointer-events: none;
+  opacity: 0.5;
+}
