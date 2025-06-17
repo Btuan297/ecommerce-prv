@@ -2,6 +2,7 @@ import { orders } from "../data/orders.js";
 import { addToCart, renderCartQuanity } from "../data/cart.js";
 import { getProduct, loadProductsFetch } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
+import { calculateArrivingDay } from "./utils/date.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 
 renderOrders();
@@ -59,7 +60,7 @@ async function renderOrders() {
         </div>
 
         <div class="product-actions">
-          <a href="tracking.html?orderId=123&productId=456">
+          <a href="tracking.html?orderId=${order.id}&productId=${matchingProduct.id}">
             <button class="track-package-button button-secondary">
               Track package
             </button>
@@ -93,11 +94,4 @@ function buyAgain() {
   });
 }
 
-function calculateArrivingDay(product) {
-  let arrivingDate = dayjs(product.estimatedDeliveryTime);
-  const checkDate = arrivingDate.format("dddd");
-  if (checkDate === "Saturday") arrivingDate = arrivingDate.add(2, "days");
-  if (checkDate === "Sunday") arrivingDate = arrivingDate.add(1, "days");
-  const dateString = arrivingDate.format("MMM DD");
-  return dateString;
-}
+
